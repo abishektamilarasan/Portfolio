@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abishek Tamilarasan</title>
+    <meta name="description" content="Electronics & Communication Engineering student building intelligent systems across hardware, software, and AI.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- Preloader -->
+    <div class="preloader" id="preloader">
+        <div class="preloader-inner">
+            <div class="preloader-logo">AT</div>
+        </div>
+    </div>
+
+    <!-- Scroll progress bar -->
+    <div class="scroll-progress" id="scrollProgress"></div>
+
+    <!-- Mouse glow -->
+    <div class="mouse-glow" id="mouseGlow"></div>
+
+    <!-- Grain texture overlay -->
+    <div class="grain"></div>
+
+    <!-- Animated background -->
+    <canvas id="bgCanvas"></canvas>
+
+    <!-- Custom cursor -->
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-follower" id="cursorFollower"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-inner">
+            <a href="#hero" class="nav-logo">AT</a>
+            <div class="nav-links" id="navLinks">
+                <a href="#about" class="nav-link" data-index="01">About</a>
+                <a href="#skills" class="nav-link" data-index="02">Skills</a>
+                <a href="#projects" class="nav-link" data-index="03">Projects</a>
+                <a href="#contact" class="nav-link" data-index="04">Contact</a>
+            </div>
+            <div class="nav-right">
+                <a href="https://github.com/abishektamilarasan" target="_blank" rel="noopener" class="nav-social" aria-label="GitHub">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                </a>
+                <a href="https://www.linkedin.com/in/abishek-tamilarasan-189bb6334/" target="_blank" rel="noopener" class="nav-social" aria-label="LinkedIn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                </a>
+                <a href="https://www.hackerrank.com/profile/abishek00tamila1" target="_blank" rel="noopener" class="nav-social" aria-label="HackerRank">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1.5 3 6.75v10.5L12 22.5l9-5.25V6.75L12 1.5zM15 16h-1.5v-3h-3v3H9V8h1.5v3h3V8H15v8z"/></svg>
+                </a>
+                <a href="https://huggingface.co/abishektamilarasan" target="_blank" rel="noopener" class="nav-social" aria-label="Hugging Face">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12.025 1.13c-5.77 0-10.449 4.647-10.449 10.378 0 1.112.178 2.181.503 3.185.064-.222.203-.444.416-.577a.96.96 0 0 1 .524-.15c.293 0 .584.124.84.284.278.173.48.408.71.694.226.282.458.611.684.951v-.014c.017-.324.106-.622.264-.874s.403-.487.762-.543c.3-.047.596.06.787.203s.31.313.4.467c.15.257.212.468.233.542.01.026.653 1.552 1.657 2.54.616.605 1.01 1.223 1.082 1.912.055.537-.096 1.059-.38 1.572.637.121 1.294.187 1.967.187.657 0 1.298-.063 1.921-.178-.287-.517-.44-1.041-.384-1.581.07-.69.465-1.307 1.081-1.913 1.004-.987 1.647-2.513 1.657-2.539.021-.074.083-.285.233-.542.09-.154.208-.323.4-.467a1.08 1.08 0 0 1 .787-.203c.359.056.604.29.762.543s.247.55.265.874v.015c.225-.34.457-.67.683-.952.23-.286.432-.52.71-.694.257-.16.547-.284.84-.285a.97.97 0 0 1 .524.151c.228.143.373.388.43.625l.006.04a10.3 10.3 0 0 0 .534-3.273c0-5.731-4.678-10.378-10.449-10.378M8.327 6.583a1.5 1.5 0 0 1 .713.174 1.487 1.487 0 0 1 .617 2.013c-.183.343-.762-.214-1.102-.094-.38.134-.532.914-.917.71a1.487 1.487 0 0 1 .69-2.803m7.486 0a1.487 1.487 0 0 1 .689 2.803c-.385.204-.536-.576-.916-.71-.34-.12-.92.437-1.103.094a1.487 1.487 0 0 1 .617-2.013 1.5 1.5 0 0 1 .713-.174m-10.68 1.55a.96.96 0 1 1 0 1.921.96.96 0 0 1 0-1.92m13.838 0a.96.96 0 1 1 0 1.92.96.96 0 0 1 0-1.92M8.489 11.458c.588.01 1.965 1.157 3.572 1.164 1.607-.007 2.984-1.155 3.572-1.164.196-.003.305.12.305.454 0 .886-.424 2.328-1.563 3.202-.22-.756-1.396-1.366-1.63-1.32q-.011.001-.02.006l-.044.026-.01.008-.03.024q-.018.017-.035.036l-.032.04a1 1 0 0 0-.058.09l-.014.025q-.049.088-.11.19a1 1 0 0 1-.083.116 1.2 1.2 0 0 1-.173.18q-.035.029-.075.058a1.3 1.3 0 0 1-.251-.243 1 1 0 0 1-.076-.107c-.124-.193-.177-.363-.337-.444-.034-.016-.104-.008-.2.022q-.094.03-.216.087-.06.028-.125.063l-.13.074q-.067.04-.136.086a3 3 0 0 0-.135.096 3 3 0 0 0-.26.219 2 2 0 0 0-.12.121 2 2 0 0 0-.106.128l-.002.002a2 2 0 0 0-.09.132l-.001.001a1.2 1.2 0 0 0-.105.212q-.013.036-.024.073c-1.139-.875-1.563-2.317-1.563-3.203 0-.334.109-.457.305-.454m.836 10.354c.824-1.19.766-2.082-.365-3.194-1.13-1.112-1.789-2.738-1.789-2.738s-.246-.945-.806-.858-.97 1.499.202 2.362c1.173.864-.233 1.45-.685.64-.45-.812-1.683-2.896-2.322-3.295s-1.089-.175-.938.647 2.822 2.813 2.562 3.244-1.176-.506-1.176-.506-2.866-2.567-3.49-1.898.473 1.23 2.037 2.16c1.564.932 1.686 1.178 1.464 1.53s-3.675-2.511-4-1.297c-.323 1.214 3.524 1.567 3.287 2.405-.238.839-2.71-1.587-3.216-.642-.506.946 3.49 2.056 3.522 2.064 1.29.33 4.568 1.028 5.713-.624m5.349 0c-.824-1.19-.766-2.082.365-3.194 1.13-1.112 1.789-2.738 1.789-2.738s.246-.945.806-.858.97 1.499-.202 2.362c-1.173.864.233 1.45.685.64.451-.812 1.683-2.896 2.322-3.295s1.089-.175.938.647-2.822 2.813-2.562 3.244 1.176-.506 1.176-.506 2.866-2.567 3.49-1.898-.473 1.23-2.037 2.16c-1.564.932-1.686 1.178-1.464 1.53s3.675-2.511 4-1.297c.323 1.214-3.524 1.567-3.287 2.405.238.839 2.71-1.587 3.216-.642.506.946-3.49 2.056-3.522 2.064-1.29.33-4.568 1.028-5.713-.624"/></svg>
+                </a>
+                <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+
+        <!-- ==================== HERO ==================== -->
+        <section id="hero" class="hero">
+            <div class="hero-content">
+                <div class="hero-badge reveal">
+                    <span class="badge-dot"></span>
+                    Open to collaborate
+                </div>
+                <h1 class="hero-name">
+                    <span class="name-line"><span class="reveal-up">Abishek</span></span>
+                    <span class="name-line"><span class="reveal-up" style="animation-delay: 0.15s">Tamilarasan</span></span>
+                </h1>
+                <div class="hero-domains reveal" style="animation-delay: 0.4s">
+                    <span class="domain-pill">Hardware</span>
+                    <span class="domain-x">&times;</span>
+                    <span class="domain-pill">Software</span>
+                    <span class="domain-x">&times;</span>
+                    <span class="domain-pill">Intelligence</span>
+                </div>
+                <p class="hero-desc reveal" style="animation-delay: 0.55s">
+                    I'm an ECE student who builds things at the intersection of 
+                    circuits, embedded systems, robotics, and machine learning. 
+                    I think the best engineering happens where disciplines collide.
+                </p>
+                <div class="hero-meta reveal" style="animation-delay: 0.65s">
+                    <span>ECE @ VIT Chennai</span>
+                    <span class="meta-sep">&middot;</span>
+                    <span>CGPA 9.12</span>
+                    <span class="meta-sep">&middot;</span>
+                    <span>Class of 2028</span>
+                </div>
+                <div class="hero-actions reveal" style="animation-delay: 0.75s">
+                    <a href="#projects" class="btn btn-primary magnetic">
+                        <span>View My Work</span>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </a>
+                    <a href="#contact" class="btn btn-ghost magnetic">Let's Connect</a>
+                </div>
+            </div>
+            <div class="scroll-cue">
+                <div class="scroll-track">
+                    <div class="scroll-thumb"></div>
+                </div>
+                <span class="scroll-text">Scroll</span>
+            </div>
+        </section>
+
+        <!-- ==================== ABOUT ==================== -->
+        <section id="about" class="section">
+            <div class="container">
+                <div class="section-label">
+                    <span class="label-line"></span>
+                    <span class="label-text">About</span>
+                    <span class="label-num">01</span>
+                </div>
+
+                <div class="about-layout">
+                    <div class="about-text">
+                        <h2 class="section-title">
+                            I don't fit neatly into <span class="accent">one box</span> &mdash; and 
+                            that's the point.
+                        </h2>
+                        <div class="about-paragraphs">
+                            <p>
+                                My work spans analog circuit design, RF engineering, embedded systems, 
+                                robotics, and artificial intelligence. The most interesting problems 
+                                I've worked on live at the intersections &mdash; where hardware meets 
+                                software meets intelligence.
+                            </p>
+                            <p>
+                                I'm not just studying theory. I design CMOS circuits in Cadence 
+                                Virtuoso, build autonomous robots with ROS2, create IoT sensor 
+                                networks with ESP32s, and train deep learning models for real-world 
+                                problems. I care about the entire pipeline &mdash; from the signal at the 
+                                sensor to the decision at the output.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="about-stats">
+                        <div class="stat-card">
+                            <span class="stat-number" data-target="9.12" data-decimals="2">0</span>
+                            <span class="stat-label">CGPA</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number" data-target="9.51" data-decimals="2">0</span>
+                            <span class="stat-label">Latest GPA</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number" data-target="91" data-decimals="0">0</span>
+                            <span class="stat-label">Credits Done</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number">2028</span>
+                            <span class="stat-label">Graduation</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Engineering Pipeline -->
+                <div class="pipeline">
+                    <div class="pipeline-title">How I think about engineering</div>
+                    <div class="pipeline-flow">
+                        <div class="pipe-step">
+                            <div class="pipe-dot"></div>
+                            <span>Sensing</span>
+                        </div>
+                        <div class="pipe-line"></div>
+                        <div class="pipe-step">
+                            <div class="pipe-dot"></div>
+                            <span>Signal Processing</span>
+                        </div>
+                        <div class="pipe-line"></div>
+                        <div class="pipe-step">
+                            <div class="pipe-dot"></div>
+                            <span>Computation</span>
+                        </div>
+                        <div class="pipe-line"></div>
+                        <div class="pipe-step">
+                            <div class="pipe-dot"></div>
+                            <span>Intelligence</span>
+                        </div>
+                        <div class="pipe-line"></div>
+                        <div class="pipe-step">
+                            <div class="pipe-dot"></div>
+                            <span>Control</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SKILLS ==================== -->
+        <section id="skills" class="section">
+            <div class="container">
+                <div class="section-label">
+                    <span class="label-line"></span>
+                    <span class="label-text">Skills</span>
+                    <span class="label-num">02</span>
+                </div>
+                <h2 class="section-title">What I work with</h2>
+
+                <div class="skills-grid">
+
+                    <div class="skill-domain" style="--accent: #8b5cf6">
+                        <div class="domain-header">
+                            <div class="domain-marker"></div>
+                            <h3>Electronics & RF</h3>
+                        </div>
+                        <p class="domain-desc">Analog circuits, VLSI design, RF systems, and signal processing.</p>
+                        <div class="skill-chips">
+                            <span class="chip">Cadence Virtuoso</span>
+                            <span class="chip">CMOS 180nm</span>
+                            <span class="chip">SkyWater PDK</span>
+                            <span class="chip">OpenROAD</span>
+                            <span class="chip">OpenLane</span>
+                            <span class="chip">ngspice</span>
+                            <span class="chip">Magic</span>
+                            <span class="chip">KiCad</span>
+                            <span class="chip">CST Studio</span>
+                            <span class="chip">CSRR Design</span>
+                        </div>
+                    </div>
+
+                    <div class="skill-domain" style="--accent: #f97316">
+                        <div class="domain-header">
+                            <div class="domain-marker"></div>
+                            <h3>Embedded Systems</h3>
+                        </div>
+                        <p class="domain-desc">Microcontrollers, sensors, IoT telemetry, and hardware interfacing.</p>
+                        <div class="skill-chips">
+                            <span class="chip">ESP32</span>
+                            <span class="chip">ESP8266</span>
+                            <span class="chip">Raspberry Pi Pico</span>
+                            <span class="chip">Arduino</span>
+                            <span class="chip">ESP32-CAM</span>
+                            <span class="chip">UART</span>
+                            <span class="chip">PWM</span>
+                            <span class="chip">I2C / SPI</span>
+                            <span class="chip">Motor Control</span>
+                            <span class="chip">Sensor Integration</span>
+                            <span class="chip">Blynk</span>
+                        </div>
+                    </div>
+
+                    <div class="skill-domain" style="--accent: #34d399">
+                        <div class="domain-header">
+                            <div class="domain-marker"></div>
+                            <h3>Robotics & Vision</h3>
+                        </div>
+                        <p class="domain-desc">Robot systems, computer vision, simulation, and control theory.</p>
+                        <div class="skill-chips">
+                            <span class="chip">ROS2</span>
+                            <span class="chip">Gazebo</span>
+                            <span class="chip">Webots</span>
+                            <span class="chip">OpenCV</span>
+                            <span class="chip">YOLO</span>
+                            <span class="chip">YOLOE</span>
+                            <span class="chip">ByteTrack</span>
+                            <span class="chip">SAM2</span>
+                            <span class="chip">ArUco</span>
+                            <span class="chip">PID Control</span>
+                            <span class="chip">Kalman Filter</span>
+                        </div>
+                    </div>
+
+                    <div class="skill-domain" style="--accent: #a78bfa">
+                        <div class="domain-header">
+                            <div class="domain-marker"></div>
+                            <h3>AI & Machine Learning</h3>
+                        </div>
+                        <p class="domain-desc">Deep learning, edge AI, local LLMs, and multimodal systems.</p>
+                        <div class="skill-chips">
+                            <span class="chip">PyTorch</span>
+                            <span class="chip">Python</span>
+                            <span class="chip">EfficientNetV2</span>
+                            <span class="chip">MATLAB</span>
+                            <span class="chip">Scikit-learn</span>
+                            <span class="chip">Ollama</span>
+                            <span class="chip">LM Studio</span>
+                            <span class="chip">RAG</span>
+                            <span class="chip">FastAPI</span>
+                            <span class="chip">Edge AI</span>
+                        </div>
+                    </div>
+
+                    <div class="skill-domain" style="--accent: #38bdf8">
+                        <div class="domain-header">
+                            <div class="domain-marker"></div>
+                            <h3>Software & Infrastructure</h3>
+                        </div>
+                        <p class="domain-desc">Development tools, cloud services, version control, and APIs.</p>
+                        <div class="skill-chips">
+                            <span class="chip">Python</span>
+                            <span class="chip">Node.js</span>
+                            <span class="chip">R</span>
+                            <span class="chip">Docker</span>
+                            <span class="chip">Linux</span>
+                            <span class="chip">Git / GitHub</span>
+                            <span class="chip">AWS</span>
+                            <span class="chip">REST APIs</span>
+                            <span class="chip">FastAPI</span>
+                            <span class="chip">VS Code</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== PROJECTS ==================== -->
+        <section id="projects" class="section">
+            <div class="container">
+                <div class="section-label">
+                    <span class="label-line"></span>
+                    <span class="label-text">Projects</span>
+                    <span class="label-num">03</span>
+                </div>
+                <h2 class="section-title">Selected work</h2>
+
+                <div class="project-filters">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="electronics">Electronics</button>
+                    <button class="filter-btn" data-filter="embedded">Embedded</button>
+                    <button class="filter-btn" data-filter="robotics">Robotics</button>
+                    <button class="filter-btn" data-filter="ai">AI / ML</button>
+                </div>
+
+                <div class="projects-grid">
+
+                    <article class="project-card" data-category="electronics" data-project-id="cmos-180nm">
+                        <div class="card-visual" style="--card-accent: #8b5cf6">
+                            <div class="card-pattern"></div>
+                            <div class="card-number">01</div>
+                        </div>
+                        <div class="card-body">
+                            <h3>180nm CMOS Analog Circuit Design</h3>
+                            <p>Designed and simulated analog integrated circuits using 180nm CMOS technology in Cadence Virtuoso. Included amplifier stages, current mirrors, and signal conditioning blocks.</p>
+                            <div class="card-tags">
+                                <span>Cadence Virtuoso</span>
+                                <span>CMOS</span>
+                                <span>Analog Design</span>
+                            </div>
+                            <div class="card-links">
+                                <a href="#" class="card-link" data-project-target="cmos-180nm">View Details <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="project-card" data-category="electronics" data-project-id="csrr-sensor">
+                        <div class="card-visual" style="--card-accent: #8b5cf6">
+                            <div class="card-pattern"></div>
+                            <div class="card-number">02</div>
+                        </div>
+                        <div class="card-body">
+                            <h3>CSRR Microwave Sensor</h3>
+                            <p>Designed a Complementary Split Ring Resonator for microwave sensing applications. Simulated and analyzed RF characteristics using CST Microwave Studio.</p>
+                            <div class="card-tags">
+                                <span>CST Studio</span>
+                                <span>RF Design</span>
+                                <span>Microwave</span>
+                            </div>
+                            <div class="card-links">
+                                <a href="#" class="card-link" data-project-target="csrr-sensor">View Details <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="project-card" data-category="embedded" data-project-id="smart-environment">
+                        <div class="card-visual" style="--card-accent: #f97316">
+                            <div class="card-pattern"></div>
+                            <div class="card-number">03</div>
+                        </div>
+                        <div class="card-body">
+                            <h3>Smart Environment Monitor</h3>
+                            <p>Built an IoT-based environmental monitoring system using ESP8266, DHT11, MQ-2 gas sensor, and flame detection. Real-time telemetry with alerts via Telegram bot integration.</p>
+                            <div class="card-tags">
+                                <span>ESP8266</span>
+                                <span>IoT</span>
+                                <span>Sensors</span>
+                                <span>Telegram API</span>
+                            </div>
+                            <div class="card-links">
+                                <a href="#" class="card-link" data-project-target="smart-environment">View Details <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="project-card" data-category="robotics" data-project-id="multi-robot">
+                        <div class="card-visual" style="--card-accent: #34d399">
+                            <div class="card-pattern"></div>
+                            <div class="card-number">04</div>
+                        </div>
+                        <div class="card-body">
+                            <h3>Multi-Robot Coordination System</h3>
+                            <p>Developed a multi-robot orchestration system using ROS2 and Gazebo. Implemented computer vision for navigation with ArUco markers, PID control, and Kalman filtering for state estimation.</p>
+                            <div class="card-tags">
+                                <span>ROS2</span>
+                                <span>Gazebo</span>
+                                <span>Computer Vision</span>
+                                <span>PID</span>
+                            </div>
+                            <div class="card-links">
+                                <a href="#" class="card-link" data-project-target="multi-robot">View Details <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="project-card" data-category="ai" data-project-id="crop-disease">
+                        <div class="card-visual" style="--card-accent: #a78bfa">
+                            <div class="card-pattern"></div>
+                            <div class="card-number">05</div>
+                        </div>
+                        <div class="card-body">
+                            <h3>Agricultural Crop Disease Detection</h3>
+                            <p>Trained an EfficientNetV2-B0 image classification model for identifying crop diseases from leaf images. Deployed as an edge-AI solution using Python and FastAPI.</p>
+                            <div class="card-tags">
+                                <span>PyTorch</span>
+                                <span>EfficientNetV2</span>
+                                <span>FastAPI</span>
+                                <span>Edge AI</span>
+                            </div>
+                            <div class="card-links">
+                                <a href="#" class="card-link" data-project-target="crop-disease">View Details <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="project-card" data-category="ai" data-project-id="local-rag">
+                        <div class="card-visual" style="--card-accent: #a78bfa">
+                            <div class="card-pattern"></div>
+                            <div class="card-number">06</div>
+                        </div>
+                        <div class="card-body">
+                            <h3>Local RAG AI Assistant</h3>
+                            <p>Built a Retrieval-Augmented Generation system running entirely on local hardware using Ollama, Qwen models, and FastAPI. No cloud dependency &mdash; privacy-first AI.</p>
+                            <div class="card-tags">
+                                <span>Ollama</span>
+                                <span>RAG</span>
+                                <span>FastAPI</span>
+                                <span>Qwen</span>
+                            </div>
+                            <div class="card-links">
+                                <a href="#" class="card-link" data-project-target="local-rag">View Details <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>
+                            </div>
+                        </div>
+                    </article>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== CONTACT ==================== -->
+        <section id="contact" class="section">
+            <div class="container">
+                <div class="section-label">
+                    <span class="label-line"></span>
+                    <span class="label-text">Contact</span>
+                    <span class="label-num">04</span>
+                </div>
+                <h2 class="section-title">Let's build something</h2>
+
+                <div class="contact-layout">
+                    <div class="contact-info">
+                        <p class="contact-desc">
+                            I'm always open to interesting projects, research collaborations, 
+                            or conversations about engineering. If you're working on something 
+                            where hardware meets intelligence &mdash; let's talk.
+                        </p>
+                        <div class="contact-links">
+                            <a href="https://github.com/abishektamilarasan" target="_blank" rel="noopener" class="contact-link">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                                <div class="link-text">
+                                    <span class="link-platform">GitHub</span>
+                                    <span class="link-handle">abishektamilarasan</span>
+                                </div>
+                            </a>
+                            <a href="https://www.linkedin.com/in/abishek-tamilarasan-189bb6334/" target="_blank" rel="noopener" class="contact-link">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                                <div class="link-text">
+                                    <span class="link-platform">LinkedIn</span>
+                                    <span class="link-handle">Abishek Tamilarasan</span>
+                                </div>
+                            </a>
+                            <a href="https://www.hackerrank.com/profile/abishek00tamila1" target="_blank" rel="noopener" class="contact-link">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1.5 3 6.75v10.5L12 22.5l9-5.25V6.75L12 1.5zM15 16h-1.5v-3h-3v3H9V8h1.5v3h3V8H15v8z"/></svg>
+                                <div class="link-text">
+                                    <span class="link-platform">HackerRank</span>
+                                    <span class="link-handle">abishek00tamila1</span>
+                                </div>
+                            </a>
+                            <a href="https://huggingface.co/abishektamilarasan" target="_blank" rel="noopener" class="contact-link">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12.025 1.13c-5.77 0-10.449 4.647-10.449 10.378 0 1.112.178 2.181.503 3.185.064-.222.203-.444.416-.577a.96.96 0 0 1 .524-.15c.293 0 .584.124.84.284.278.173.48.408.71.694.226.282.458.611.684.951v-.014c.017-.324.106-.622.264-.874s.403-.487.762-.543c.3-.047.596.06.787.203s.31.313.4.467c.15.257.212.468.233.542.01.026.653 1.552 1.657 2.54.616.605 1.01 1.223 1.082 1.912.055.537-.096 1.059-.38 1.572.637.121 1.294.187 1.967.187.657 0 1.298-.063 1.921-.178-.287-.517-.44-1.041-.384-1.581.07-.69.465-1.307 1.081-1.913 1.004-.987 1.647-2.513 1.657-2.539.021-.074.083-.285.233-.542.09-.154.208-.323.4-.467a1.08 1.08 0 0 1 .787-.203c.359.056.604.29.762.543s.247.55.265.874v.015c.225-.34.457-.67.683-.952.23-.286.432-.52.71-.694.257-.16.547-.284.84-.285a.97.97 0 0 1 .524.151c.228.143.373.388.43.625l.006.04a10.3 10.3 0 0 0 .534-3.273c0-5.731-4.678-10.378-10.449-10.378M8.327 6.583a1.5 1.5 0 0 1 .713.174 1.487 1.487 0 0 1 .617 2.013c-.183.343-.762-.214-1.102-.094-.38.134-.532.914-.917.71a1.487 1.487 0 0 1 .69-2.803m7.486 0a1.487 1.487 0 0 1 .689 2.803c-.385.204-.536-.576-.916-.71-.34-.12-.92.437-1.103.094a1.487 1.487 0 0 1 .617-2.013 1.5 1.5 0 0 1 .713-.174m-10.68 1.55a.96.96 0 1 1 0 1.921.96.96 0 0 1 0-1.92m13.838 0a.96.96 0 1 1 0 1.92.96.96 0 0 1 0-1.92M8.489 11.458c.588.01 1.965 1.157 3.572 1.164 1.607-.007 2.984-1.155 3.572-1.164.196-.003.305.12.305.454 0 .886-.424 2.328-1.563 3.202-.22-.756-1.396-1.366-1.63-1.32q-.011.001-.02.006l-.044.026-.01.008-.03.024q-.018.017-.035.036l-.032.04a1 1 0 0 0-.058.09l-.014.025q-.049.088-.11.19a1 1 0 0 1-.083.116 1.2 1.2 0 0 1-.173.18q-.035.029-.075.058a1.3 1.3 0 0 1-.251-.243 1 1 0 0 1-.076-.107c-.124-.193-.177-.363-.337-.444-.034-.016-.104-.008-.2.022q-.094.03-.216.087-.06.028-.125.063l-.13.074q-.067.04-.136.086a3 3 0 0 0-.135.096 3 3 0 0 0-.26.219 2 2 0 0 0-.12.121 2 2 0 0 0-.106.128l-.002.002a2 2 0 0 0-.09.132l-.001.001a1.2 1.2 0 0 0-.105.212q-.013.036-.024.073c-1.139-.875-1.563-2.317-1.563-3.203 0-.334.109-.457.305-.454m.836 10.354c.824-1.19.766-2.082-.365-3.194-1.13-1.112-1.789-2.738-1.789-2.738s-.246-.945-.806-.858-.97 1.499.202 2.362c1.173.864-.233 1.45-.685.64-.45-.812-1.683-2.896-2.322-3.295s-1.089-.175-.938.647 2.822 2.813 2.562 3.244-1.176-.506-1.176-.506-2.866-2.567-3.49-1.898.473 1.23 2.037 2.16c1.564.932 1.686 1.178 1.464 1.53s-3.675-2.511-4-1.297c-.323 1.214 3.524 1.567 3.287 2.405-.238.839-2.71-1.587-3.216-.642-.506.946 3.49 2.056 3.522 2.064 1.29.33 4.568 1.028 5.713-.624m5.349 0c-.824-1.19-.766-2.082.365-3.194 1.13-1.112 1.789-2.738 1.789-2.738s.246-.945.806-.858.97 1.499-.202 2.362c-1.173.864.233 1.45.685.64.451-.812 1.683-2.896 2.322-3.295s1.089-.175.938.647-2.822 2.813-2.562 3.244 1.176-.506 1.176-.506 2.866-2.567 3.49-1.898-.473 1.23-2.037 2.16c-1.564.932-1.686 1.178-1.464 1.53s3.675-2.511 4-1.297c.323 1.214-3.524 1.567-3.287 2.405.238.839 2.71-1.587 3.216-.642.506.946-3.49 2.056-3.522 2.064-1.29.33-4.568 1.028-5.713-.624"/></svg>
+                                <div class="link-text">
+                                    <span class="link-platform">Hugging Face</span>
+                                    <span class="link-handle">abishektamilarasan</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <form class="contact-form" id="contactForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="name">Name</label>
+                                <input type="text" id="name" name="name" placeholder="Your name" required autocomplete="name">
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" name="email" placeholder="you@example.com" required autocomplete="email">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" rows="5" placeholder="Tell me about your project or idea..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-full magnetic">
+                            <span>Send Message</span>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-inner">
+                <span class="footer-logo">AT</span>
+                <span class="footer-text">Designed & built by Abishek Tamilarasan</span>
+                <span class="footer-year">&copy; 2026</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Project Details Modal (Liquid Glass) -->
+    <div class="project-modal-backdrop" id="projectModal" aria-hidden="true">
+        <div class="project-modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+            <div class="modal-header">
+                <span class="modal-badge" id="modalBadge">Category</span>
+                <button class="modal-close" id="modalClose" aria-label="Close dialog">&times;</button>
+            </div>
+            <h3 class="modal-title" id="modalTitle">Project Title</h3>
+            <p class="modal-desc" id="modalDesc">Detailed explanation of the project.</p>
+            <div class="modal-highlights" id="modalHighlights">
+                <h4>Key Technical Highlights</h4>
+                <ul id="modalHighlightsList"></ul>
+            </div>
+            <div class="modal-tags" id="modalTags"></div>
+            <div class="modal-actions" id="modalActions"></div>
+        </div>
+    </div>
+
+    <!-- 3D & Animation Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
+
