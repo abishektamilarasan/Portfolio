@@ -345,85 +345,150 @@
     });
   }
 
-  // ── 10. Section Snap Scroll ───────────────────────────────────────
+  // ── 10. Intelligent Section Takeover & Smooth Transition ──────────
   function initSectionSnap(lenis) {
-    var sections = document.querySelectorAll('#hero, #about, #skills, #projects, #contact');
+    var sectionIds = ['hero', 'about', 'skills', 'projects', 'contact'];
+    var sections = sectionIds.map(function (id) { return document.getElementById(id); }).filter(Boolean);
     if (!sections.length) return;
 
-    var currentIdx = 0;
-    var isSnapping = false;
-    var lastWheelTime = 0;
-    var wheelAccum = 0;
-    var WHEEL_THRESHOLD = 50; // minimum delta to trigger snap
+    var isTransitioning = false;
+    var settleTimer = null;
 
-    // Update current section based on scroll position
-    function updateCurrentSection() {
-      var scrollTop = window.scrollY || window.pageYOffset;
-      var viewH = window.innerHeight;
-      var best = 0;
-      var bestDist = Infinity;
+    // Helper: Find which section is dominant in current viewport
+    function getDominantSection() {
+      var vh = window.innerHeight;
+      var bestIdx = 0;
+      var maxVisibility = -1;
+
       for (var i = 0; i < sections.length; i++) {
-        var dist = Math.abs(sections[i].offsetTop - scrollTop);
-        if (dist < bestDist) { bestDist = dist; best = i; }
+        var rect = sections[i].getBoundingClientRect();
+        var visibleTop = Math.max(0, rect.top);
+        var visibleBottom = Math.min(vh, rect.bottom);
+        var visibleHeight = Math.max(0, visibleBottom - visibleTop);
+
+        if (visibleHeight > maxVisibility) {
+          maxVisibility = visibleHeight;
+          bestIdx = i;
+        }
       }
-      currentIdx = best;
+      return bestIdx;
     }
 
-    // Snap to a section
-    function snapTo(idx) {
-      if (idx < 0 || idx >= sections.length || isSnapping) return;
-      isSnapping = true;
-      currentIdx = idx;
+    function smoothScrollTo(targetY, callback) {
+      if (isTransitioning) return;
+      isTransitioning = true;
 
-      var target = sections[idx].offsetTop;
-      if (lenis) {
-        lenis.scrollTo(target, {
-          duration: 1.0,
+      if (lenis && typeof lenis.scrollTo === 'function') {
+        lenis.scrollTo(targetY, {
+          duration: 1.15,
+          easing: function (t) { return 1 - Math.pow(1 - t, 4); },
           onComplete: function () {
-            setTimeout(function () { isSnapping = false; wheelAccum = 0; }, 300);
+            setTimeout(function () {
+              isTransitioning = false;
+              if (callback) callback();
+            }, 80);
           }
         });
       } else {
-        window.scrollTo({ top: target, behavior: 'smooth' });
-        setTimeout(function () { isSnapping = false; wheelAccum = 0; }, 1200);
+        window.scrollTo({ top: targetY, behavior: 'smooth' });
+        setTimeout(function () {
+          isTransitioning = false;
+          if (callback) callback();
+        }, 800);
       }
     }
 
-    // Listen for wheel events
+    // Boundary detection on wheel:
+    // Inside a section: natural, unhindered scrolling.
+    // At boundary moving to next/prev section: TAKEOVER!
     window.addEventListener('wheel', function (e) {
-      if (isSnapping) { e.preventDefault(); return; }
-
-      var now = Date.now();
-      // Reset accumulator if wheel was idle for a bit
-      if (now - lastWheelTime > 300) wheelAccum = 0;
-      lastWheelTime = now;
-
-      wheelAccum += e.deltaY;
-
-      if (Math.abs(wheelAccum) > WHEEL_THRESHOLD) {
+      if (isTransitioning) {
         e.preventDefault();
-        updateCurrentSection();
-        var dir = wheelAccum > 0 ? 1 : -1;
-        var nextIdx = clamp(currentIdx + dir, 0, sections.length - 1);
-        if (nextIdx !== currentIdx) {
-          snapTo(nextIdx);
-        } else {
-          isSnapping = false;
+        return;
+      }
+
+      var scrollY = window.pageYOffset || window.scrollY;
+      var vh = window.innerHeight;
+      var activeIdx = getDominantSection();
+      var activeSec = sections[activeIdx];
+      var secTop = activeSec.offsetTop;
+      var secHeight = activeSec.offsetHeight;
+      var secBottom = secTop + secHeight;
+
+      // Scrolling DOWN
+      if (e.deltaY > 15) {
+        // At or reached bottom of current section
+        var atBottom = (scrollY + vh) >= (secBottom - 50);
+
+        if (atBottom && activeIdx < sections.length - 1) {
+          // Take over! Slide to next section header so current section completely leaves view
+          e.preventDefault();
+          var nextTarget = sections[activeIdx + 1].offsetTop;
+          smoothScrollTo(nextTarget);
+          return;
         }
-        wheelAccum = 0;
+        // Otherwise, allow natural scrolling inside the section
+      }
+      // Scrolling UP
+      else if (e.deltaY < -15) {
+        // At or reached top of current section
+        var atTop = scrollY <= (secTop + 50);
+
+        if (atTop && activeIdx > 0) {
+          // Take over! Slide to previous section so current section leaves view
+          e.preventDefault();
+          var prevSec = sections[activeIdx - 1];
+          var prevTarget = prevSec.offsetTop;
+          // If previous section is taller than viewport, position at its bottom so user enters from bottom
+          if (prevSec.offsetHeight > vh + 60) {
+            prevTarget = (prevSec.offsetTop + prevSec.offsetHeight) - vh;
+          }
+          smoothScrollTo(prevTarget);
+          return;
+        }
+        // Otherwise, allow natural scrolling inside the section
       }
     }, { passive: false });
 
-    // Allow keyboard navigation
+    // Settle helper: if user stops midway between sections, smoothly snap to dominant section
+    function onScrollSettle() {
+      if (isTransitioning) return;
+      var scrollY = window.pageYOffset || window.scrollY;
+      var vh = window.innerHeight;
+      var activeIdx = getDominantSection();
+      var activeSec = sections[activeIdx];
+      var secTop = activeSec.offsetTop;
+      var secBottom = secTop + activeSec.offsetHeight;
+      var distFromTop = Math.abs(scrollY - secTop);
+
+      // If active section is approximately single-screen height, lock cleanly to its top
+      if (activeSec.offsetHeight <= vh + 100) {
+        if (distFromTop > 25 && distFromTop < vh * 0.45) {
+          smoothScrollTo(secTop);
+        }
+      }
+    }
+
+    window.addEventListener('scroll', function () {
+      clearTimeout(settleTimer);
+      settleTimer = setTimeout(onScrollSettle, 280);
+    }, { passive: true });
+
+    // Keyboard navigation
     document.addEventListener('keydown', function (e) {
-      if (isSnapping) return;
-      updateCurrentSection();
-      if (e.key === 'ArrowDown' || e.key === 'PageDown') {
-        e.preventDefault();
-        snapTo(currentIdx + 1);
-      } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
-        e.preventDefault();
-        snapTo(currentIdx - 1);
+      if (isTransitioning) return;
+      var activeIdx = getDominantSection();
+
+      if (e.key === 'PageDown' || e.key === 'ArrowDown') {
+        if (e.key === 'PageDown' && activeIdx < sections.length - 1) {
+          e.preventDefault();
+          smoothScrollTo(sections[activeIdx + 1].offsetTop);
+        }
+      } else if (e.key === 'PageUp' || e.key === 'ArrowUp') {
+        if (e.key === 'PageUp' && activeIdx > 0) {
+          e.preventDefault();
+          smoothScrollTo(sections[activeIdx - 1].offsetTop);
+        }
       }
     });
   }
